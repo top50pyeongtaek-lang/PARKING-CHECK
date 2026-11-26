@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>주차장 잔여 면수 테스트</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111827;
+      color: #ffffff;
+      text-align: center;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    .box {
+      background: #1f2937;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .big {
+      font-size: 48px;
+      font-weight: bold;
+      color: #4ade80;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>공영주차장 잔여 면수</h2>
+
+  <div class="box">
+    <div>평택JC어린이공원지하주차장</div>
+    <div class="big" id="jc">확인 중</div>
+  </div>
+
+  <div class="box">
+    <div>자란공영주차장</div>
+    <div class="big" id="jaran">확인 중</div>
+  </div>
+
+  <script>
+    const URL = "https://parking.puc.or.kr/operating.json";
+
+    fetch(URL)
+      .then((res) => res.json())
+      .then((data) => {
+        const list = Array.isArray(data) ? data : (data.data || data.list || []);
+        const jcItem = list.find((item) => JSON.stringify(item).includes("JC"));
+        const jaranItem = list.find((item) => JSON.stringify(item).includes("자란"));
+
+        document.getElementById("jc").innerText = jcItem ? JSON.stringify(jcItem) : "데이터 못 찾음";
+        document.getElementById("jaran").innerText = jaranItem ? JSON.stringify(jaranItem) : "데이터 못 찾음";
+      })
+      .catch(() => {
+        document.getElementById("jc").innerText = "연결 대기(테스트용)";
+        document.getElementById("jaran").innerText = "연결 대기(테스트용)";
+      });
+  </script>
+</body>
+</html>
